@@ -18,7 +18,6 @@ function createPromise(position, delay) {
 const formEl =  document.querySelector(".form");
 
 function handleSubmit(event) {
-    console.log("handleSubmit", event);
   event.preventDefault();
   
   const {
