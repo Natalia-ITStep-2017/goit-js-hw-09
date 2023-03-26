@@ -16,30 +16,28 @@ const options = {
   },
 };
 
-const startBtnEl = document.querySelector("button"); 
-const flatpickrEl = document.querySelector("#datetime-picker"); 
-const daysEl = document.querySelector("[data-days]"); 
-const hoursEl = document.querySelector("[data-hours]"); 
-const minutesEl = document.querySelector("[data-minutes]"); 
-const secondsEl = document.querySelector("[data-seconds]"); 
+const startBtnEl = document.querySelector("button");
+const flatpickrEl = document.querySelector("#datetime-picker");
+const daysEl = document.querySelector("[data-days]");
+const hoursEl = document.querySelector("[data-hours]");
+const minutesEl = document.querySelector("[data-minutes]");
+const secondsEl = document.querySelector("[data-seconds]");
 
 const fpk = flatpickr(flatpickrEl, options);
 
-startBtnEl.setAttribute("disabled", true);
-
-function checkDate(selectedDate){
+function checkDate(selectedDate) {
   if (selectedDate <= new Date()) {
 
     if (!startBtnEl.hasAttribute("disabled")) {
       startBtnEl.setAttribute("disabled", true);
     }
-    
+
     Notiflix.Notify.failure("Please choose a date in the future");
   } else {
     startBtnEl.removeAttribute("disabled");
   }
 }
-   
+
 function convertMs(ms) {
   // Number of milliseconds per unit of time
   const second = 1000;
@@ -68,19 +66,18 @@ let timerId = null;
 startBtnEl.addEventListener("click", () => {
   const setDate = fpk.selectedDates[0];
   timerId = setInterval(() => {
-    let a = 0;
     if (setDate > new Date()) {
+      startBtnEl.setAttribute('disabled', true)
       let dateDifference = convertMs(setDate - new Date());
 
       daysEl.textContent = addLeadingZero(dateDifference.days);
-      hoursEl.textContent = addLeadingZero(dateDifference.hours); 
-      minutesEl.textContent = addLeadingZero(dateDifference.minutes); 
-      secondsEl.textContent  = addLeadingZero(dateDifference.seconds);   
+      hoursEl.textContent = addLeadingZero(dateDifference.hours);
+      minutesEl.textContent = addLeadingZero(dateDifference.minutes);
+      secondsEl.textContent = addLeadingZero(dateDifference.seconds);
     } else {
-      console.log(`Interval with id ${timerId} has stopped!`);
       clearInterval(timerId);
       secondsEl.textContent = '00';
+      startBtnEl.removeAttribute('disabled')
     }
   }, 1000);
-    
 });
